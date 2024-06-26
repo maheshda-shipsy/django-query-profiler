@@ -1,7 +1,7 @@
 import json
 from typing import Dict
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 from django_query_profiler.chrome_plugin_helpers import redis_utils
@@ -22,12 +22,27 @@ def get_query_profiled_data(request, redis_key: str, query_profiler_level: str) 
     }
     return render(request, QUERY_PROFILER_LEVEL_TO_TEMPLATE[query_profiler_level], context)
 
-def get_query_profiled_data_context(request, redis_key: str, query_profiler_level: str):
-    import pdb;pdb.set_trace()
+def get_n_plus1_query_data(request, redis_key: str) -> JsonResponse:
     query_profiled_data: QueryProfiledData = redis_utils.retrieve_data(redis_key)
-    context = {
-        'summary': query_profiled_data.summary,
-        'query_signature_to_statistics': query_profiled_data.query_signature_to_query_signature_statistics,
-        'flamegraphStack': json.dumps(query_profiled_data.flamegraph_stack),
-    }
-    return context
+    
+    n_plus1_queries = []
+    for query_signature, query_statistics in query_profiled_data.query_signature_to_query_signature_statistics.items():
+        if query_statistics.frequency > 1:
+            file_func = (query_signature.app_stack_trace.0).split("#")
+            file_name = file_func[0]
+            line_func = file_func[1].split(" ")
+            line_no = line_func[0]
+            func_name = line_func[1]
+            n_plus1_queries.append({
+                'query': query_signature.query_without_params,
+                'frequency': query_statistics.frequency,
+                'query_execution_time_in_micros': query_statistics.query_execution_time_in_micros,
+                'db_row_count': query_statistics.db_row_count,
+                'app_stack_trace': query_signature.app_stack_trace,
+                'file_name' : file_name,
+                'func_name' : func_name,
+                'line_no' : line_no,
+                'recommendation': query_signature.analysis.name if query_signature.analysis.visible_in_ui else None
+            })
+    
+    return JsonResponse({'n_plus1_queries': n_plus1_queries})

@@ -6,6 +6,6 @@ GET_QUERY_PROFILED_DATA_NAME = 'get_query_profiled_data'
 urlpatterns = [
     path('<str:redis_key>/<str:query_profiler_level>', views.get_query_profiled_data,
          name=GET_QUERY_PROFILED_DATA_NAME),
-    path('context/<str:redis_key>/<str:query_profiler_level>', views.get_query_profiled_data_context,
+    path('json_data/<str:redis_key>/<str:query_profiler_level>', views.get_n_plus1_query_data,
          name=GET_QUERY_PROFILED_DATA_NAME),
 ]
