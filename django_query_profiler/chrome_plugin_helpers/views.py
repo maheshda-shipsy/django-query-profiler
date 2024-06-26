@@ -28,7 +28,8 @@ def get_n_plus1_query_data(request, redis_key: str) -> JsonResponse:
     n_plus1_queries = []
     for query_signature, query_statistics in query_profiled_data.query_signature_to_query_signature_statistics.items():
         if query_statistics.frequency > 1:
-            file_func = (query_signature.app_stack_trace.0).split("#")
+            file_func = query_signature.app_stack_trace.0
+            file_func = file_func.split("#")
             file_name = file_func[0]
             line_func = file_func[1].split(" ")
             line_no = line_func[0]
