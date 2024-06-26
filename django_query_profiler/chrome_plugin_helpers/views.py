@@ -29,7 +29,7 @@ def get_n_plus1_query_data(request, redis_key: str, query_profiler_level: str) -
     for query_signature, query_statistics in query_profiled_data.query_signature_to_query_signature_statistics.items():
         if query_statistics.frequency > 1:
             stack_trace = query_signature.app_stack_trace[0]
-            file_name = stack_trace.module_name
+            file_name = f'stockone-wms/wms/{stack_trace.module_name.replace(".", "/")}.py'
             line_no = stack_trace.line_number
             func_name = stack_trace.function_name
             n_plus1_queries.append({
