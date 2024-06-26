@@ -22,7 +22,7 @@ def get_query_profiled_data(request, redis_key: str, query_profiler_level: str) 
     }
     return render(request, QUERY_PROFILER_LEVEL_TO_TEMPLATE[query_profiler_level], context)
 
-def get_n_plus1_query_data(request, redis_key: str) -> JsonResponse:
+def get_n_plus1_query_data(request, redis_key: str, query_profiler_level: str) -> JsonResponse:
     query_profiled_data: QueryProfiledData = redis_utils.retrieve_data(redis_key)
     
     n_plus1_queries = []
