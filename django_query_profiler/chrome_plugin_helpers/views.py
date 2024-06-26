@@ -37,7 +37,6 @@ def get_n_plus1_query_data(request, redis_key: str, query_profiler_level: str) -
                 'frequency': query_statistics.frequency,
                 'query_execution_time_in_micros': query_statistics.query_execution_time_in_micros,
                 'db_row_count': query_statistics.db_row_count,
-                'app_stack_trace': query_signature.app_stack_trace,
                 'file_name' : file_name,
                 'func_name' : func_name,
                 'line_no' : line_no,
