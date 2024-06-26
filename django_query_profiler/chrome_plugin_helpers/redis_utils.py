@@ -11,7 +11,8 @@ from django.conf import settings
 from django_query_profiler.query_profiler_storage import QueryProfiledData
 
 REDIS_INSTANCE = redis.StrictRedis(
-    host=settings.DJANGO_QUERY_PROFILER_REDIS_HOST,
+    host="redis",
+    password="JguvU^FP4V",
     port=settings.DJANGO_QUERY_PROFILER_REDIS_PORT,
     db=settings.DJANGO_QUERY_PROFILER_REDIS_DB)
 
