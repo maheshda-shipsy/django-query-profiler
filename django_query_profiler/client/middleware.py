@@ -41,9 +41,10 @@ class QueryProfilerMiddleware:
             response = self.get_response(request)
 
         query_profiled_data: QueryProfiledData = query_profiler.query_profiled_data
+        pr_num = get_pr_number(request)
         try:
             # Pickling the object, and saving to redis
-            redis_key: str = redis_utils.store_data(query_profiled_data)
+            redis_key: str = redis_utils.store_data(query_profiled_data, pr_num)
             query_profiled_detail_relative_url: str = reverse(query_profiler_url.GET_QUERY_PROFILED_DATA_NAME,
                                                               args=[redis_key, query_profiler_level.name])
             query_profiled_detail_absolute_url: str = request.build_absolute_uri(query_profiled_detail_relative_url)
