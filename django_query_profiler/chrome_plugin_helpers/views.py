@@ -14,7 +14,7 @@ QUERY_PROFILER_LEVEL_TO_TEMPLATE: Dict[str, str] = {
 
 
 def get_query_profiled_data(request, redis_key: str, query_profiler_level: str) -> HttpResponse:
-    pr_num = get_pr_number(request)
+    pr_num = redis_utils.get_pr_number(request)
     query_profiled_data: QueryProfiledData = redis_utils.retrieve_data(redis_key, pr_num)
     context = {
         'summary': query_profiled_data.summary,
@@ -24,7 +24,7 @@ def get_query_profiled_data(request, redis_key: str, query_profiler_level: str) 
     return render(request, QUERY_PROFILER_LEVEL_TO_TEMPLATE[query_profiler_level], context)
 
 def get_n_plus1_query_data(request, redis_key: str, query_profiler_level: str) -> JsonResponse:
-    pr_num = get_pr_number(request)
+    pr_num = redis_utils.get_pr_number(request)
     query_profiled_data: QueryProfiledData = redis_utils.retrieve_data(redis_key, pr_num)
     
     n_plus1_queries = []
