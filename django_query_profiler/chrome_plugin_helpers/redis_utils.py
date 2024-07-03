@@ -21,7 +21,7 @@ def store_data(query_profiled_data: QueryProfiledData, pr_num: str) -> str:
     pickled_query_profiled_data = pickle.dumps(query_profiled_data)
     redis_key = str(uuid.uuid4().hex)
     ttl_seconds: int = settings.DJANGO_QUERY_PROFILER_REDIS_KEYS_EXPIRY_SECONDS
-    REDIS_INSTANCE.hset(name = pr_num + "_django_query_profiler", key= redis_key, value=pickled_query_profiled_data, ex=ttl_seconds)
+    REDIS_INSTANCE.hset(name = pr_num + "_django_query_profiler", key= redis_key, value=pickled_query_profiled_data)
     return redis_key
 
 
