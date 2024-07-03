@@ -59,12 +59,13 @@ class QueryProfilerMiddleware:
             else:
                 raise ex
 
-        # Setting all headers that the chrome plugin require
-        response[ChromePluginData.QUERY_PROFILED_SUMMARY_DATA] = json.dumps(query_profiled_data.summary.as_dict())
-        response[ChromePluginData.QUERY_PROFILED_DETAILED_URL] = query_profiled_detail_absolute_url
-        response[ChromePluginData.TIME_SPENT_PROFILING_IN_MICROS] = query_profiled_data.time_spent_profiling_in_micros
-        response[ChromePluginData.TOTAL_SERVER_TIME_IN_MILLIS] = int((time() - start_time) * 1000)
-        response[ChromePluginData.QUERY_PROFILER_DETAILED_VIEW_LINK_TEXT] = detailed_view_link_text
+        if not (hasattr(settings, "DROP_PROFILER_HEADERS") and settings.DROP_PROFILER_HEADERS):
+            # Setting all headers that the chrome plugin require
+            response[ChromePluginData.QUERY_PROFILED_SUMMARY_DATA] = json.dumps(query_profiled_data.summary.as_dict())
+            response[ChromePluginData.QUERY_PROFILED_DETAILED_URL] = query_profiled_detail_absolute_url
+            response[ChromePluginData.TIME_SPENT_PROFILING_IN_MICROS] = query_profiled_data.time_spent_profiling_in_micros
+            response[ChromePluginData.TOTAL_SERVER_TIME_IN_MILLIS] = int((time() - start_time) * 1000)
+            response[ChromePluginData.QUERY_PROFILER_DETAILED_VIEW_LINK_TEXT] = detailed_view_link_text
 
         settings.DJANGO_QUERY_PROFILER_POST_PROCESSOR(query_profiled_data, request, response)
         return response

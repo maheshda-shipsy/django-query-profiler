@@ -31,13 +31,10 @@ def retrieve_data(redis_key: str, pr_num : str) -> QueryProfiledData:
 
 def get_pr_number(request) -> str:
     host = request.headers.get('Host',"")
-    host = host.split("//")
-    if len(host) <=1:
-        return ""
-    host = host[1]
     host = host.split(".")
     pr = host[0] if host else ""
     return pr
+
 
 def clear_redis(pr_num):
     REDIS_INSTANCE.delete(pr_num + "_django_query_profiler")
