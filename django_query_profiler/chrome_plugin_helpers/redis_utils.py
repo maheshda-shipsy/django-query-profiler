@@ -31,7 +31,7 @@ def retrieve_data(redis_key: str, pr_num : str) -> QueryProfiledData:
     return pickle.loads(redis_object)
 
 def get_pr_number(request) -> str:
-    pr_num = os.env.get('PULL') or ""
+    pr_num = os.environ.get('PULL') or ""
     if not pr_num:
         host = request.headers.get('Host',"")
         host = host.split(".")
