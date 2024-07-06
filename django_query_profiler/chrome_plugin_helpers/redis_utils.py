@@ -4,6 +4,7 @@ Redis is used for storing the pickled query profiled data, and later to retrieve
 """
 import pickle
 import uuid
+import os
 
 import redis
 from django.conf import settings
@@ -30,11 +31,12 @@ def retrieve_data(redis_key: str, pr_num : str) -> QueryProfiledData:
     return pickle.loads(redis_object)
 
 def get_pr_number(request) -> str:
-    host = request.headers.get('Host',"")
-    host = host.split(".")
-    pr = host[0] if host else ""
-    return pr
-
+    pr_num = os.env.get('PULL') or ""
+    if not pr_num:
+        host = request.headers.get('Host',"")
+        host = host.split(".")
+        pr_num = host[0] if host else ""
+    return pr_num
 
 def clear_redis(pr_num):
     REDIS_INSTANCE.delete(pr_num + "_django_query_profiler")
