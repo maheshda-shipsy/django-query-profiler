@@ -40,7 +40,6 @@
                         <th>Database time spent</th>
                         <th>Database rows fetched</th>
                         <th>Potential N+1 count</th>
-                        <th>Exact query duplicates</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,7 +49,6 @@
                         <th>{{ summary.total_query_execution_time_in_micros|commafy }} μs</th>
                         <th>{{ summary.total_db_row_count|commafy }}</th>
                         <th>{{ summary.potential_n_plus1_query_count|commafy }}</th>
-                        <th>{{ summary.exact_query_duplicates|commafy }}</th>
                     </tr>
                 </tbody>
             </table>
