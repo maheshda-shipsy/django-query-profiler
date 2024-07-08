@@ -14,8 +14,8 @@ QUERY_PROFILER_LEVEL_TO_TEMPLATE: Dict[str, str] = {
 
 
 def get_query_profiled_data(request, redis_key: str, query_profiler_level: str) -> HttpResponse:
-    pr_num = redis_utils.get_pr_number(request)
-    query_profiled_data: QueryProfiledData = redis_utils.retrieve_data(redis_key, pr_num)
+    host = redis_utils.get_host(request)
+    query_profiled_data: QueryProfiledData = redis_utils.retrieve_data(redis_key, host)
     context = {
         'summary': query_profiled_data.summary,
         'query_signature_to_statistics': query_profiled_data.query_signature_to_query_signature_statistics,
@@ -24,8 +24,8 @@ def get_query_profiled_data(request, redis_key: str, query_profiler_level: str) 
     return render(request, QUERY_PROFILER_LEVEL_TO_TEMPLATE[query_profiler_level], context)
 
 def get_n_plus1_query_data(request, redis_key: str, query_profiler_level: str) -> JsonResponse:
-    pr_num = redis_utils.get_pr_number(request)
-    query_profiled_data: QueryProfiledData = redis_utils.retrieve_data(redis_key, pr_num)
+    host = redis_utils.get_host(request)
+    query_profiled_data: QueryProfiledData = redis_utils.retrieve_data(redis_key, host)
     
     n_plus1_queries = []
     for query_signature, query_statistics in query_profiled_data.query_signature_to_query_signature_statistics.items():
