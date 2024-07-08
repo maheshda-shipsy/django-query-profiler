@@ -41,7 +41,7 @@ class QueryProfilerMiddleware:
             response = self.get_response(request)
 
         query_profiled_data: QueryProfiledData = query_profiler.query_profiled_data
-        host = redis_utils.get_host(request)
+        host = redis_utils.get_host()
         try:
             # Pickling the object, and saving to redis
             redis_key: str = redis_utils.store_data(query_profiled_data, host)
