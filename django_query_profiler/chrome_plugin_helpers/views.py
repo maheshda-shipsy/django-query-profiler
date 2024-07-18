@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django_query_profiler.chrome_plugin_helpers import redis_utils
 from django_query_profiler.query_profiler_storage import QueryProfiledData, QueryProfilerLevel
 from django.contrib.auth.decorators import login_required
-from utils import get_nplus1_data
+from django_query_profiler.chrome_plugin_helpers.utils import get_nplus1_data
 
 QUERY_PROFILER_LEVEL_TO_TEMPLATE: Dict[str, str] = {
     QueryProfilerLevel.QUERY_SIGNATURE.name: 'django_query_profiler_level_query_signature.html',
