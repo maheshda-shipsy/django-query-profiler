@@ -8,4 +8,5 @@ urlpatterns = [
          name=GET_QUERY_PROFILED_DATA_NAME),
     path('json_data/<str:redis_key>/<str:query_profiler_level>', views.get_n_plus1_query_data,
          name=GET_QUERY_PROFILED_DATA_NAME),
+    path('query_performance/', views.query_performance_details, name='query_performance_details'),
 ]

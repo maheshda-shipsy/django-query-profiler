@@ -6,6 +6,8 @@ from django.shortcuts import render
 
 from django_query_profiler.chrome_plugin_helpers import redis_utils
 from django_query_profiler.query_profiler_storage import QueryProfiledData, QueryProfilerLevel
+from django.contrib.auth.decorators import login_required
+from utils import get_nplus1_data
 
 QUERY_PROFILER_LEVEL_TO_TEMPLATE: Dict[str, str] = {
     QueryProfilerLevel.QUERY_SIGNATURE.name: 'django_query_profiler_level_query_signature.html',
@@ -46,3 +48,9 @@ def get_n_plus1_query_data(request, redis_key: str, query_profiler_level: str) -
             })
     
     return JsonResponse({'n_plus1_queries': n_plus1_queries})
+
+@login_required(login_url='/admin/login/')
+def query_performance_details(request):
+    limit= int(request.GET.get('limit') or  0)
+    query_data = get_nplus1_data(request, limit)
+    return HttpResponse(query_data)
