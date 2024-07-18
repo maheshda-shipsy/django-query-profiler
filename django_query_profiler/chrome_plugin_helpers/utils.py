@@ -1,4 +1,4 @@
-from redis_utils import get_host, REDIS_INSTANCE
+from django_query_profiler.chrome_plugin_helpers.redis_utils import get_host, REDIS_INSTANCE
 
 import json, os, pickle
 from collections import defaultdict
